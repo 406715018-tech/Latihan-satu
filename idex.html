@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>พจนานุกรม มลายู-ไทย</title>
+<style>
+:root{
+  --bg:#faf7f2; --card:#ffffff; --ink:#2a2420; --sub:#6b6058;
+  --accent:#c0392b; --accent2:#1a7a5e; --line:#e8e0d6; --chip:#f3ede3;
+  --shadow:0 2px 10px rgba(0,0,0,.06);
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1c1815; --card:#262019; --ink:#f1e9de; --sub:#b8ab9c;
+    --accent:#e6685c; --accent2:#3fc89a; --line:#3a3128; --chip:#332b22;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1c1815; --card:#262019; --ink:#f1e9de; --sub:#b8ab9c;
+  --accent:#e6685c; --accent2:#3fc89a; --line:#3a3128; --chip:#332b22;
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans Thai","Sarabun",-apple-system,BlinkMacSystemFont,sans-serif;min-height:100%}
+header{position:sticky;top:0;z-index:5;background:var(--bg);padding:calc(14px + env(safe-area-inset-top,0px)) 16px 10px;border-bottom:1px solid var(--line)}
+h1{margin:0 0 2px;font-size:1.3rem}
+.sub{color:var(--sub);font-size:.85rem;margin-bottom:10px}
+.tabs{display:flex;gap:8px;margin-bottom:10px}
+.tab{flex:1;text-align:center;padding:9px 6px;border-radius:10px;background:var(--chip);border:1px solid var(--line);font-weight:600;font-size:.9rem;cursor:pointer;color:var(--sub)}
+.tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.search-row{display:flex;gap:8px}
+input[type=search]{flex:1;padding:11px 14px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:1rem}
+select{padding:11px 8px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:.85rem;max-width:130px}
+main{padding:14px 16px 40px;max-width:720px;margin:0 auto}
+.count{color:var(--sub);font-size:.8rem;margin:8px 2px 10px}
+.word-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px;box-shadow:var(--shadow)}
+.wc-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.wc-my{font-size:1.08rem;font-weight:700;color:var(--accent)}
+.wc-no{color:var(--sub);font-size:.72rem;font-weight:400;margin-right:6px}
+.wc-th{color:var(--ink);font-size:.98rem;margin-top:2px}
+.wc-ex{color:var(--sub);font-size:.82rem;margin-top:6px;line-height:1.4}
+.spk{border:none;background:var(--chip);color:var(--accent2);width:38px;height:38px;border-radius:50%;font-size:1.1rem;cursor:pointer;flex-shrink:0}
+.spk:active{transform:scale(.92)}
+.cat-tag{display:inline-block;font-size:.68rem;color:var(--accent2);background:var(--chip);padding:2px 8px;border-radius:20px;margin-top:6px}
+.empty{text-align:center;color:var(--sub);padding:40px 10px}
+.credits{max-width:720px;margin:10px auto 30px;padding:16px 18px;background:var(--card);border:1px solid var(--line);border-radius:12px;font-size:.82rem;color:var(--sub);line-height:1.7}
+.credits b{color:var(--ink)}
+.credits .grp-title{color:var(--accent);font-weight:700;font-size:.9rem;margin-bottom:6px}
+.credits ul{margin:4px 0 8px;padding-left:20px}
+.credits .uni{font-size:.78rem;margin-top:6px;border-top:1px solid var(--line);padding-top:8px}
+
+/* about/help */
+.icon-btn{position:absolute;top:calc(14px + env(safe-area-inset-top,0px));right:16px;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--chip);color:var(--ink);font-size:1rem;cursor:pointer}
+header{position:sticky;top:0;z-index:5;background:var(--bg);padding:calc(14px + env(safe-area-inset-top,0px)) 16px 10px;border-bottom:1px solid var(--line);position:relative}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:20;align-items:flex-end;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal-box{background:var(--bg);color:var(--ink);width:100%;max-width:560px;max-height:82vh;overflow-y:auto;border-radius:18px 18px 0 0;padding:20px 20px calc(24px + env(safe-area-inset-bottom,0px));box-shadow:0 -4px 24px rgba(0,0,0,.2)}
+.modal-box h2{margin:0 0 10px;font-size:1.15rem;color:var(--accent)}
+.modal-box h3{font-size:.95rem;margin:16px 0 6px;color:var(--accent2)}
+.modal-box p, .modal-box li{font-size:.88rem;line-height:1.7;color:var(--ink)}
+.modal-box ul, .modal-box ol{padding-left:20px;margin:4px 0}
+.modal-close{display:block;margin:18px auto 0;padding:10px 30px;border:none;border-radius:10px;background:var(--accent);color:#fff;font-weight:700;cursor:pointer}
+
+/* flashcards */
+#fc-wrap{display:none}
+#fc-wrap.active{display:block}
+.fc-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;color:var(--sub);font-size:.85rem}
+.fc-stage{perspective:1200px;height:230px;margin-bottom:16px}
+.fc-card{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s;cursor:pointer}
+.fc-card.flipped{transform:rotateY(180deg)}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;box-shadow:var(--shadow);border:1px solid var(--line)}
+.fc-front{background:var(--card)}
+.fc-back{background:var(--accent);color:#fff;transform:rotateY(180deg)}
+.fc-word{font-size:1.6rem;font-weight:800;color:var(--accent)}
+.fc-hint{color:var(--sub);font-size:.78rem;margin-top:10px}
+.fc-back .fc-word{color:#fff}
+.fc-ex{font-size:.85rem;margin-top:10px;opacity:.9}
+.fc-controls{display:flex;gap:8px;justify-content:center}
+.fc-btn{flex:1;max-width:140px;padding:11px;border-radius:10px;border:none;font-weight:700;font-size:.9rem;cursor:pointer}
+.fc-btn.next{background:var(--accent);color:#fff}
+.fc-btn.shuffle{background:var(--chip);color:var(--ink)}
+.fc-btn.speak{background:var(--chip);color:var(--accent2)}
+.fc-progress{text-align:center;color:var(--sub);font-size:.8rem;margin-bottom:8px}
+</style>
+</head>
+<body>
+<header>
+  <button class="icon-btn" id="helpBtn" title="เกี่ยวกับ / วิธีใช้">ℹ️</button>
+  <h1>📖 พจนานุกรม มลายู–ไทย</h1>
+  <div class="sub">350 คำศัพท์สื่อสารในชีวิตประจำวัน พร้อมเสียงอ่าน</div>
+  <div class="tabs">
+    <div class="tab active" id="tabDict">พจนานุกรม</div>
+    <div class="tab" id="tabFC">🎴 แฟลชการ์ด (50 คำ)</div>
+  </div>
+  <div class="search-row" id="dict-search-row">
+    <input type="search" id="search" placeholder="ค้นหาคำมลายู หรือ คำไทย...">
+    <select id="catFilter"><option value="">ทุกหมวด</option></select>
+  </div>
+</header>
+<main>
+  <div id="dict-wrap">
+    <div class="count" id="count"></div>
+    <div id="list"></div>
+  </div>
+
+  <div id="fc-wrap">
+    <div class="fc-bar">
+      <span id="fc-cat"></span>
+      <span id="fc-progress"></span>
+    </div>
+    <div class="fc-stage">
+      <div class="fc-card" id="fcCard">
+        <div class="fc-face fc-front">
+          <button class="spk" id="fcSpeak" onclick="event.stopPropagation();speak(fcIdxWord[1])">🔊</button>
+          <div class="fc-word" id="fcMy"></div>
+          <div class="fc-hint">แตะเพื่อดูคำแปล</div>
+        </div>
+        <div class="fc-face fc-back">
+          <div class="fc-word" id="fcTh"></div>
+          <div class="fc-ex" id="fcEx"></div>
+        </div>
+      </div>
+    </div>
+    <div class="fc-controls">
+      <button class="fc-btn shuffle" onclick="shuffleFC()">🔀 สุ่ม</button>
+      <button class="fc-btn next" onclick="nextFC()">ถัดไป ➜</button>
+    </div>
+  </div>
+
+  <div class="credits">
+    <div class="grp-title">👥 จัดทำโดย กลุ่มที่ 1</div>
+    <ul>
+      <li>406715011 นางสาวซีรอตุลมูนา อาลี</li>
+      <li>406715012 นางสาวโนรอีดายะห์ ยะโก๊ะ</li>
+      <li>406715013 นางสาวนูรอาซีกีน มะรียอ</li>
+      <li>406715017 นางสาวซอฟาวาตีย์ บินลอเด็ง</li>
+      <li>406715018 นางสาวนุรฟาดีละห์ เกะมาซอ</li>
+      <li>406715031 นางสาวอัฟดา ดีสะเอะ</li>
+    </ul>
+    <div class="uni">หลักสูตรครุศาสตรบัณฑิต สาขาวิชาการสอนภาษามลายู<br>คณะมนุษยศาสตร์และสังคมศาสตร์ มหาวิทยาลัยราชภัฏยะลา</div>
+  </div>
+</main>
+
+<script>
+const CATS = ["ทักทาย/มารยาท","สรรพนาม/บุคคล","กริยาทั่วไป","คำถาม/สื่อสาร","เวลา/วัน/เทศกาล","อาหาร/เครื่องดื่ม","ซื้อของ/ตัวเลข","สถานที่/การเดินทาง","ความรู้สึก/อารมณ์","ครอบครัว/ความสัมพันธ์","อากาศ/ธรรมชาติ","งาน/สุขภาพ/กิจกรรม"];
+function catOf(no){
+  if(no<=25)return 0; if(no<=50)return 1; if(no<=100)return 2; if(no<=125)return 3;
+  if(no<=150)return 4; if(no<=180)return 5; if(no<=210)return 6; if(no<=240)return 7;
+  if(no<=265)return 8; if(no<=285)return 9; if(no<=305)return 10; return 11;
+}
+// [no, malay, thai, example]
+const WORDS = [
+[1,"Halo / Hello","สวัสดี","Halo, apa khabar? (สวัสดี สบายดีไหม?)"],
+[2,"Selamat pagi","สวัสดีตอนเช้า","Selamat pagi, cikgu. (สวัสดีตอนเช้าครับคุณครู)"],
+[3,"Selamat siang","สวัสดีตอนสาย/บ่าย","Selamat siang, semua. (สวัสดีตอนสายครับทุกคน)"],
+[4,"Selamat petang","สวัสดีตอนเย็น","Selamat petang, jiran saya. (สวัสดีตอนเย็นครับเพื่อนบ้านของฉัน)"],
+[5,"Selamat malam","ราตรีสวัสดิ์","Selamat malam, mimpi indah. (ราตรีสวัสดิ์ฝันดีนะ)"],
+[6,"Terima kasih","ขอบคุณ","Terima kasih atas bantuan anda. (ขอบคุณสำหรับการช่วยเหลือของคุณ)"],
+[7,"Sama-sama","ยินดีด้วย / ไม่เป็นไร","Sama-sama, jangan segan. (ไม่เป็นไรครับ ไม่ต้องเกรงใจ)"],
+[8,"Maaf","ขอโทษ","Maaf, saya lambat. (ขอโทษครับ ผมมาช้า)"],
+[9,"Sila","เชิญ","Sila masuk ke dalam. (เชิญเข้ามาข้างในครับ)"],
+[10,"Jemput","เชิญ (มักใช้กับการกิน)","Jemput makan semua. (เชิญทานข้าวกันครับทุกคน)"],
+[11,"Apa khabar?","สบายดีไหม?","Apa khabar hari ini? (วันนี้สบายดีไหม?)"],
+[12,"Khabar baik","สบายดี","Khabar baik, terima kasih. (สบายดีครับ ขอบคุณครับ)"],
+[13,"Selamat datang","ยินดีต้อนรับ","Selamat datang ke Malaysia. (ยินดีต้อนรับสู่มาเลเซีย)"],
+[14,"Selamat jalan","เดินทางโดยสวัสดิภาพ","Selamat jalan, semoga selamat sampai. (เดินทางโดยสวัสดิภาพ ขอให้ถึงที่หมายอย่างปลอดภัย)"],
+[15,"Selamat tinggal","ลาก่อน (พูดกับผู้ที่อยู่)","Selamat tinggal, jumpa lagi. (ลาก่อน แล้วพบกันใหม่)"],
+[16,"Jumpa lagi","พบกันใหม่","Jumpa lagi esok. (ไว้พบกันใหม่พรุ่งนี้)"],
+[17,"Tolong","ช่วยด้วย / โปรด","Tolong tutup pintu itu. (โปรดปิดประตูบานนั้นด้วย)"],
+[18,"Bagus","ดีมาก","Kerja anda sangat bagus. (งานของคุณดีมาก)"],
+[19,"Ya","ใช่","Ya, saya setuju. (ใช่ ผมเห็นด้วย)"],
+[20,"Tidak","ไม่","Tidak, saya tidak mahu. (ไม่ ผมไม่ต้องการ)"],
+[21,"Bukan","ไม่ใช่","Ini bukan buku saya. (นี่ไม่ใช่หนังสือของฉัน)"],
+[22,"Mungkin","อาจจะ","Mungkin dia akan datang. (บางทีเขาอาจจะมา)"],
+[23,"Tentu","แน่นอน","Saya tentu akan hadir. (ฉันจะไปร่วมงานแน่นอน)"],
+[24,"Benar","จริง","Adakah itu benar? (นั่นเป็นเรื่องจริงไหม?)"],
+[25,"Faham","เข้าใจ","Saya faham apa yang anda kata. (ฉันเข้าใจที่คุณพูด)"],
+[26,"Saya","ฉัน / ผม","Saya pelajar di sini. (ฉันเป็นนักเรียนที่นี่)"],
+[27,"Awak / Kamu","คุณ / เธอ","Awak hendak pergi ke mana? (คุณจะไปไหน?)"],
+[28,"Anda","ท่าน (สุภาพ)","Anda perlu mendaftar dahulu. (ท่านต้องลงทะเบียนก่อน)"],
+[29,"Kami","พวกเรา (ไม่รวมผู้ฟัง)","Kami mahu makan sekarang. (พวกเราอยากกินข้าวตอนนี้)"],
+[30,"Kita","พวกเรา (รวมผู้ฟัง)","Kita harus bekerjasama. (พวกเราต้องร่วมมือกัน)"],
+[31,"Mereka","พวกเขา","Mereka sedang bermain bola. (พวกเขากำลังเล่นบอล)"],
+[32,"Dia","เขา / เธอ (บุคคลที่ 3)","Dia sangat rajin. (เขาขยันมาก)"],
+[33,"Beliau","ท่าน (ใช้กับผู้อาวุโส)","Beliau ialah pengurus kami. (ท่านคือผู้จัดการของเรา)"],
+[34,"Orang","คน","Berapa orang yang hadir? (มีคนมาเข้าร่วมกี่คน?)"],
+[35,"Kawan","เพื่อน","Ini kawan baik saya. (นี่คือเพื่อนสนิทของฉัน)"],
+[36,"Lelaki","ผู้ชาย","Dia seorang lelaki yang kacak. (เขาเป็นผู้ชายที่หล่อคนหนึ่ง)"],
+[37,"Perempuan","ผู้หญิง","Adik saya seorang perempuan. (น้องของฉันเป็นผู้หญิง)"],
+[38,"Budak","เด็ก","Budak itu sedang menangis. (เด็กคนนั้นกำลังร้องไห้)"],
+[39,"Bayi","ทารก","Bayi itu sedang tidur. (ทารกคนนั้นกำลังนอนหลับ)"],
+[40,"Guru","ครู","Guru itu sedang mengajar. (ครูคนนั้นกำลังสอน)"],
+[41,"Murid","นักเรียน","Murid-murid sedang belajar. (เหล่านักเรียนกำลังเรียน)"],
+[42,"Doktor","หมอ","Saya perlu berjumpa doktor. (ฉันต้องไปหาหมอ)"],
+[43,"Polis","ตำรวจ","Polis sedang bertugas. (ตำรวจกำลังปฏิบัติหน้าที่)"],
+[44,"Jiran","เพื่อนบ้าน","Jiran saya sangat ramah. (เพื่อนบ้านของฉันเป็นกันเองมาก)"],
+[45,"Boss / Majikan","หัวหน้า / นายจ้าง","Boss saya sangat tegas. (หัวหน้าของฉันเข้มงวดมาก)"],
+[46,"Pekerja","พนักงาน","Pekerja itu sangat cekap. (พนักงานคนนั้นคล่องแคล่วมาก)"],
+[47,"Tetamu","แขก","Kami mempunyai tetamu hari ini. (วันนี้เรามีแขกมาหา)"],
+[48,"Pelancong","นักท่องเที่ยว","Banyak pelancong di sini. (ที่นี่มีนักท่องเที่ยวมากมาย)"],
+[49,"Pemuda","ชายหนุ่ม","Pemuda itu sangat berani. (ชายหนุ่มคนนั้นกล้าหาญมาก)"],
+[50,"Pemudi","หญิงสาว","Pemudi itu sangat cantik. (หญิงสาวคนนั้นสวยมาก)"],
+[51,"Makan","กิน","Saya suka makan nasi lemak. (ฉันชอบกินนาซีเลอมัก)"],
+[52,"Minum","ดื่ม","Sila minum air ini. (เชิญดื่มน้ำนี้ครับ)"],
+[53,"Pergi","ไป","Saya mahu pergi ke sekolah. (ฉันต้องการไปโรงเรียน)"],
+[54,"Datang","มา","Bila anda akan datang? (คุณจะมาเมื่อไหร่?)"],
+[55,"Tidur","นอน","Saya mahu tidur awal. (ฉันอยากนอนเร็ว)"],
+[56,"Bangun","ตื่น / ลุกขึ้น","Saya bangun pada pukul enam. (ฉันตื่นนอนตอนหกโมง)"],
+[57,"Mandi","อาบน้ำ","Jangan lupa mandi. (อย่าลืมอาบน้ำนะ)"],
+[58,"Jalan","เดิน","Mari kita jalan bersama. (พวกเรามาเดินไปด้วยกันเถอะ)"],
+[59,"Lari","วิ่ง","Jangan lari di koridor. (อย่าวิ่งตรงระเบียงทางเดิน)"],
+[60,"Duduk","นั่ง","Sila duduk di sini. (เชิญนั่งตรงนี้ครับ)"],
+[61,"Berdiri","ยืน","Sila berdiri tegak. (กรุณายืนตรงครับ)"],
+[62,"Baca","อ่าน","Saya suka baca buku. (ฉันชอบอ่านหนังสือ)"],
+[63,"Tulis","เขียน","Sila tulis nama anda. (กรุณาเขียนชื่อของคุณ)"],
+[64,"Dengar","ฟัง","Dengar nasihat saya. (ฟังคำแนะนำของฉันนะ)"],
+[65,"Cakap / Berbicara","พูด","Dia boleh cakap Melayu. (เขาพูดภาษามลายูได้)"],
+[66,"Lihat / Tengok","ดู/ มอง","Lihat burung itu! (ดูนกตัวนั้นสิ!)"],
+[67,"Beli","ซื้อ","Saya mahu beli baju. (ฉันต้องการซื้อเสื้อ)"],
+[68,"Jual","ขาย","Dia jual buah-buahan. (เขาขายผลไม้)"],
+[69,"Kerja","ทำงาน","Saya kerja di bank. (ฉันทำงานที่ธนาคาร)"],
+[70,"Main","เล่น","Budak itu main bola. (เด็กคนนั้นเล่นบอล)"],
+[71,"Belajar","เรียน","Kita mesti belajar rajin. (พวกเราต้องตั้งใจเรียน)"],
+[72,"Masak","ทำอาหาร","Ibu saya masak sedap. (แม่ของฉันทำอาหารอร่อย)"],
+[73,"Basuh","ล้าง / ซัก","Tolong basuh pinggan. (ช่วยล้างจานหน่อยครับ)"],
+[74,"Buka","เปิด","Tolong buka pintu. (ช่วยเปิดประตูหน่อยครับ)"],
+[75,"Tutup","ปิด","Tutup lampu sebelum keluar. (ปิดไฟก่อนออกจากห้อง)"],
+[76,"Beri / Kasih","ให้","Sila beri saya pen. (ขอปากกาให้ฉันหน่อย)"],
+[77,"Ambil","หยิบ / เอา","Sila ambil beg ini. (ช่วยหยิบกระเป๋าใบนี้หน่อย)"],
+[78,"Letak","วาง","Letak buku di atas meja. (วางหนังสือไว้บนโต๊ะ)"],
+[79,"Tolak","ผลัก / ปฏิเสธ","Dia tolak tawaran itu. (เขาปฏิเสธข้อเสนอนั้น)"],
+[80,"Tarik","ดึง","Tarik pintu ini kuat-kuat. (ดึงประตูนี้แรงๆ)"],
+[81,"Bawa","พา / นำมา","Bawa payung bersama. (พาร่มไปด้วยนะ)"],
+[82,"Cari","หา","Saya cari kunci saya. (ฉันกำลังหากุญแจของฉัน)"],
+[83,"Jumpa","พบ / เจอ","Saya jumpa dia semalam. (ฉันเจอเขาเมื่อวานนี้)"],
+[84,"Ingat","จำ","Saya ingat nama anda. (ฉันจำชื่อของคุณได้)"],
+[85,"Lupa","ลืม","Jangan lupa janji kita. (อย่าลืมสัญญาของเรานะ)"],
+[86,"Tanya","ถาม","Tanya dia jika ragu. (ถามเขาดูถ้าสงสัย)"],
+[87,"Jawab","ตอบ","Sila jawab soalan saya. (กรุณาตอบคำถามของฉันด้วย)"],
+[88,"Bayar","จ่าย","Saya mahu bayar bil. (ฉันต้องการจ่ายบิล)"],
+[89,"Pinjam","ยืม","Boleh saya pinjam buku? (ขอยืมหนังสือหน่อยได้ไหม?)"],
+[90,"Pulang / Balik","กลับ","Saya mahu pulang sekarang. (ฉันอยากกลับแล้วตอนนี้)"],
+[91,"Tunggu","รอ","Tunggu sekejap, ya. (รอสักครู่นะครับ)"],
+[92,"Guna","ใช้","Boleh saya guna telefon? (ขอใช้โทรศัพท์หน่อยได้ไหม?)"],
+[93,"Pakai","สวมใส่","Pakai baju yang bersih. (ใส่เสื้อผ้าที่สะอาดนะ)"],
+[94,"Simpan","เก็บ","Simpan duit dalam dompet. (เก็บเงินไว้ในกระเป๋าสตางค์)"],
+[95,"Buang","ทิ้ง","Buang sampah di sini. (ทิ้งขยะตรงนี้)"],
+[96,"Pilih","เลือก","Sila pilih warna ini. (กรุณาเลือกสีนี้ครับ)"],
+[97,"Bantu","ช่วยเหลือ","Saya mahu bantu anda. (ฉันอยากช่วยคุณ)"],
+[98,"Fikir","คิด","Saya kena fikir dulu. (ฉันต้องคิดดูก่อน)"],
+[99,"Menangis","ร้องไห้","Mengapa dia menangis? (ทำไมเขาถึงร้องไห้?)"],
+[100,"Ketawa","หัวเราะ","Jangan ketawa kuat sangat. (อย่าหัวเราะดังเกินไป)"],
+[101,"Apa?","อะไร?","Apa itu? (นั่นคืออะไร?)"],
+[102,"Siapa?","ใคร?","Siapa nama anda? (คุณชื่ออะไร?)"],
+[103,"Mana?","ไหน?","Di mana tandas? (ห้องน้ำอยู่ที่ไหน?)"],
+[104,"Bila?","เมื่อไหร่?","Bila kita bertolak? (พวกเราจะออกเดินทางเมื่อไหร่?)"],
+[105,"Mengapa? / Kenapa?","ทำไม?","Kenapa anda lambat? (ทำไมคุณถึงมาสาย?)"],
+[106,"Bagaimana?","อย่างไร?","Bagaimana cara masak ini? (ทำสิ่งนี้ได้อย่างไร?)"],
+[107,"Berapa?","เท่าไหร่?","Berapa harga ini? (ราคานี้เท่าไหร่?)"],
+[108,"Ke mana?","ไปไหน?","Awak mahu ke mana? (คุณจะไปไหน?)"],
+[109,"Dari mana?","มาจากไหน?","Anda dari mana? (คุณมาจากไหน?)"],
+[110,"Yang mana?","อันไหน?","Yang mana satu pilihan anda? (คุณเลือกอันไหน?)"],
+[111,"Macam mana?","ยังไง? (ภาษาพูด)","Macam mana mahu pergi? (จะไปยังไงดี?)"],
+[112,"Betulkah?","จริงเหรอ?","Betulkah berita itu? (ข่าวเป็นเรื่องจริงเหรอ?)"],
+[113,"Ada?","มีไหม?","Ada orang di rumah? (มีใครอยู่ที่บ้านไหม?)"],
+[114,"Boleh?","ได้ไหม?","Boleh saya bantu? (ให้ผมช่วยได้ไหม?)"],
+[115,"Mengapa tidak?","ทำไมล่ะ?","Mengapa tidak setuju? (ทำไมถึงไม่เห็นด้วยล่ะ?)"],
+[116,"Siapa punya?","ของใคร?","Pen ini siapa punya? (ปากกานี้ของใคร?)"],
+[117,"Cerita","เล่า / เรื่องราว","Ceritakan kepada saya. (เล่าให้ฉันฟังหน่อย)"],
+[118,"Khabar","ข่าวสาร","Apa khabar terbaru? (มีข่าวอะไรใหม่ๆ บ้างไหม?)"],
+[119,"Janji","สัญญา","Saya janji akan datang. (ฉันสัญญาว่าจะมา)"],
+[120,"Pesan","สั่ง / ฝากข้อความ","Saya mahu pesan makanan. (ฉันอยากสั่งอาหาร)"],
+[121,"Terangkan","อธิบาย","Sila terangkan lagi. (โปรดอธิบายอีกครั้ง)"],
+[122,"Rahsia","ความลับ","Ini adalah rahsia. (นี่เป็นความลับนะ)"],
+[123,"Nasihat","คำแนะนำ","Terima kasih atas nasihat. (ขอบคุณสำหรับคำแนะนำ)"],
+[124,"Cadangan","ข้อเสนอแนะ","Apa cadangan anda? (ข้อเสนอแนะของคุณคืออะไร?)"],
+[125,"Faham?","เข้าใจไหม?","Adakah anda faham? (คุณเข้าใจไหม?)"],
+[126,"Hari ini","วันนี้","Hari ini sangat panas. (วันนี้อากาศร้อนมาก)"],
+[127,"Semalam","เมื่อวานนี้","Semalam saya sakit. (เมื่อวานฉันป่วย)"],
+[128,"Esok","พรุ่งนี้","Esok ada mesyuarat. (พรุ่งนี้มีการประชุม)"],
+[129,"Lusa","มะรืนนี้","Kita jumpa lusa. (พวกเราเจอกันมะรืนนี้นะ)"],
+[130,"Sekarang","ตอนนี้","Pergi sekarang juga! (ไปเดี๋ยวนี้เลย!)"],
+[131,"Pagi","เช้า","Pagi ini saya jogging. (เช้านี้ฉันไปวิ่ง)"],
+[132,"Tengah hari","เที่ยง","Makan tengah hari di sini. (กินมื้อเที่ยงที่นี่นะ)"],
+[133,"Petang","เย็น","Main bola waktu petang. (เล่นบอลตอนเย็น)"],
+[134,"Malam","กลางคืน","Tidur awal malam ini. (คืนนี้รีบนอนนะ)"],
+[135,"Jam / Pukul","ชั่วโมง / โมง","Pukul berapa sekarang? (ตอนนี้กี่โมงแล้ว?)"],
+[136,"Minit","นาที","Tunggu lima minit. (รอห้านาทีน่ะ)"],
+[137,"Saat","วินาที","Tunggu satu saat. (รอสักครู่นะ)"],
+[138,"Minggu","สัปดาห์","Jumpa minggu depan. (เจอกันสัปดาห์หน้า)"],
+[139,"Bulan","เดือน","Bulan depan saya cuti. (เดือนหน้าฉันลาหยุด)"],
+[140,"Tahun","ปี","Tahun ini sangat cepat. (ปีนี้ผ่านไปไวมาก)"],
+[141,"Isnin","วันจันทร์","Hari Isnin hari bekerja. (วันจันทร์เป็นวันทำงาน)"],
+[142,"Selasa","วันอังคาร","Selasa ada kelas. (วันอังคารมีเรียน)"],
+[143,"Rabu","วันพุธ","Rabu saya sibuk. (วันพุธฉันยุ่ง)"],
+[144,"Khamis","วันพฤหัสบดี","Khamis kita jumpa. (วันพฤหัสเราเจอกัน)"],
+[145,"Jumaat","วันศุกร์","Jumaat hari mulia. (วันศุกร์เป็นวันมงคล)"],
+[146,"Sabtu","วันเสาร์","Sabtu saya rehat. (วันเสาร์ฉันพักผ่อน)"],
+[147,"Ahad","วันอาทิตย์","Ahad pergi ke pasar. (วันอาทิตย์ไปตลาด)"],
+[148,"Cuti","วันหยุด","Selamat bercuti! (ขอให้มีความสุขในวันหยุด!)"],
+[149,"Masa","เวลา","Masa itu emas. (เวลาเป็นเงินเป็นทอง)"],
+[150,"Hari Raya","วันเทศกาล (ฮารีรายอ)","Selamat Hari Raya! (สุขสันต์วันฮารีรายอ!)"],
+[151,"Nasi","ข้าว","Saya makan nasi putih. (ฉันกินข้าวสวย)"],
+[152,"Air","น้ำ","Boleh saya minta air? (ขอน้ำหน่อยได้ไหม?)"],
+[153,"Ayam","ไก่","Ayam goreng sangat sedap. (ไก่ทอดอร่อยมาก)"],
+[154,"Ikan","ปลา","Ikan bakar ini panas. (ปลาเผานี้ร้อน)"],
+[155,"Daging","เนื้อ","Daging lembu mahal. (เนื้อวัวราคาแพง)"],
+[156,"Sayur","ผัก","Makan sayur untuk sihat. (กินผักเพื่อสุขภาพนะ)"],
+[157,"Buah","ผลไม้","Buah betik manis. (มะละกอหวาน)"],
+[158,"Roti","ขนมปัง","Roti canai satu! (โรตีจะไนหนึ่งที่!)"],
+[159,"Telur","ไข่","Saya mahu telur mata. (ฉันอยากได้ไข่ดาว)"],
+[160,"Mee","หมี่","Mee rebus sangat pedas. (หมี่ต้มเผ็ดมาก)"],
+[161,"Pedas","เผ็ด","Masakan ini sangat pedas. (อาหารจานนี้เผ็ดมาก)"],
+[162,"Manis","หวาน","Kopi ini terlalu manis. (กาแฟนี้หวานเกินไป)"],
+[163,"Masin","เค็ม","Sup ini agak masin. (ซุปนี้ค่อนข้างเค็ม)"],
+[164,"Masam","เปรี้ยว","Limau ini masam. (มะนาวนี้เปรี้ยว)"],
+[165,"Pahit","ขม","Ubat itu sangat pahit. (ยาตัวนั้นขมมาก)"],
+[166,"Sedap","อร่อย","Makanan di sini sedap. (อาหารที่นี่อร่อย)"],
+[167,"Lapar","หิว","Saya sangat lapar. (ฉันหิวมาก)"],
+[168,"Haus / Dahaga","หิวน้ำ","Saya rasa haus. (ฉันรู้สึกหิวน้ำ)"],
+[169,"Kenyang","อิ่ม","Saya sudah kenyang. (ฉันอิ่มแล้ว)"],
+[170,"Kedai makan","ร้านอาหาร","Mari pergi kedai makan. (ไปที่ร้านอาหารกันเถอะ)"],
+[171,"Restoran","ภัตตาคาร","Restoran itu mahal. (ภัตตาคารนั้นแพง)"],
+[172,"Menu","เมนู","Boleh lihat menu? (ขอดูเมนูหน่อยได้ไหม?)"],
+[173,"Bil / Resit","บิล / ใบเสร็จ","Minta bil, tolong. (เช็คบิลหน่อยครับ)"],
+[174,"Garpu","ส้อม","Tolong beri saya garpu. (ช่วยเอาส้อมให้ฉันหน่อย)"],
+[175,"Sudu","ช้อน","Sudu ini kotor. (ช้อนนี้สกปรก)"],
+[176,"Pinggan","จาน","Pinggan sudah basuh. (จานล้างเสร็จแล้ว)"],
+[177,"Cawan","แก้วกาแฟ / ถ้วย","Cawan kopi saya pecah. (ถ้วยกาแฟของฉันแตก)"],
+[178,"Gula","น้ำตาล","Kurangkan gula dalam teh. (ใส่น้ำตาลในชาน้อยๆ)"],
+[179,"Garam","เกลือ","Letak sedikit garam. (ใส่เกลือนิดหน่อย)"],
+[180,"Sarapan","อาหารเช้า","Saya sudah sarapan. (ฉันทานมื้อเช้าแล้ว)"],
+[181,"Harga","ราคา","Berapa harga baju ini? (เสื้อตัวนี้ราคาเท่าไหร่?)"],
+[182,"Murah","ถูก","Barang ini sangat murah. (ของชิ้นนี้ราคาถูกมาก)"],
+[183,"Mahal","แพง","Kasut itu terlalu mahal. (รองเท้าคู่นั้นแพงเกินไป)"],
+[184,"Kedai","ร้านค้า","Kedai itu tutup hari ini. (ร้านนั้นปิดวันนี้)"],
+[185,"Pasar","ตลาด","Ibu ke pasar pagi-pagi. (แม่ไปตลาดแต่เช้า)"],
+[186,"Duit / Wang","เงิน","Saya tiada duit. (ฉันไม่มีเงิน)"],
+[187,"Kurang","ลด / น้อยลง","Boleh kurang harga? (ลดราคาหน่อยได้ไหม?)"],
+[188,"Diskaun","ส่วนลด","Ada diskaun hari ini? (วันนี้มีส่วนลดไหม?)"],
+[189,"Baki","เงินทอน","Ini baki duit anda. (นี่คือเงินทอนของคุณ)"],
+[190,"Borong","ขายส่ง","Beli borong lebih murah. (ซื้อยกโหลถูกกว่า)"],
+[191,"Satu","หนึ่ง","Satu ringgit sahaja. (หนึ่งริงกิตเท่านั้น)"],
+[192,"Dua","สอง","Saya ada dua beg. (ฉันมีกระเป๋าสองใบ)"],
+[193,"Tiga","สาม","Tiga orang sudah sampai. (สามคนมาถึงแล้ว)"],
+[194,"Empat","สี่","Empat biji epal. (แอปเปิ้ลสี่ลูก)"],
+[195,"Lima","ห้า","Lima minit lagi. (อีกห้านาที)"],
+[196,"Enam","หก","Enam bulan lepas. (หกเดือนที่แล้ว)"],
+[197,"Tujuh","เจ็ด","Tujuh hari seminggu. (เจ็ดวันต่อสัปดาห์)"],
+[198,"Lapan","แปด","Pukul lapan pagi. (แปดโมงเช้า)"],
+[199,"Sembilan","เก้า","Tingkat sembilan. (ชั้นเก้า)"],
+[200,"Sepuluh","สิบ","Sepuluh ringgit. (สิบริงกิต)"],
+[201,"Sebelas","สิบเอ็ด","Nombor sebelas. (หมายเลขสิบเอ็ด)"],
+[202,"Dua puluh","ยี่สิบ","Umur saya dua puluh. (อายุของฉันยี่สิบปี)"],
+[203,"Seratus","หนึ่งร้อย","Seratus peratus benar. (จริงร้อยเปอร์เซ็นต์)"],
+[204,"Seribu","หนึ่งพัน","Harga itu seribu. (ราคานั้นหนึ่งพัน)"],
+[205,"Beg","กระเป๋า","Beg ini sangat berat. (กระเป๋าใบนี้หนักมาก)"],
+[206,"Baju","เสื้อ","Saya mahu baju baru. (ฉันอยากได้เสื้อใหม่)"],
+[207,"Kasut","รองเท้า","Pakai kasut anda. (ใส่รองเท้าของคุณซะ)"],
+[208,"Seluar","กางเกง","Seluar ini sudah koyak. (กางเกงตัวนี้ขาดแล้ว)"],
+[209,"Jam tangan","นาฬิกาข้อมือ","Jam tangan itu cantik. (นาฬิกาข้อมือเรือนนั้นสวย)"],
+[210,"Bayar tunai","จ่ายเงินสด","Saya mahu bayar tunai. (ฉันอยากจ่ายเงินสด)"],
+[211,"Rumah","บ้าน","Saya mahu pulang rumah. (ฉันอยากกลับบ้าน)"],
+[212,"Sekolah","โรงเรียน","Sekolah saya dekat. (โรงเรียนของฉันอยู่ใกล้)"],
+[213,"Pejabat","ออฟฟิศ / สำนักงาน","Dia di pejabat sekarang. (ตอนนี้เขาอยู่ที่ออฟฟิศ)"],
+[214,"Hospital","โรงพยาบาล","Hospital di sana. (โรงพยาบาลอยู่ตรงโน้น)"],
+[215,"Masjid","มัสยิด","Mari pergi ke masjid. (ไปมัสยิดกันเถอะ)"],
+[216,"Balai polis","สถานีตำรวจ","Laporkan di balai polis. (ไปแจ้งความที่สถานีตำรวจ)"],
+[217,"Lapangan terbang","สนามบิน","Ke lapangan terbang sekarang. (ไปสนามบินตอนนี้เลย)"],
+[218,"Tandas","ห้องน้ำ","Di mana tandas? (ห้องน้ำอยู่ที่ไหน?)"],
+[219,"Jalan raya","ถนน","Jalan raya ini sibuk. (ถนนสายนี้วุ่นวาย/รถเยอะ)"],
+[220,"Jambatan","สะพาน","Jambatan itu sangat panjang. (สะพานนั้นยาวมาก)"],
+[221,"Kiri","ซ้าย","Belok kiri di sana. (เลี้ยวซ้ายตรงนั้น)"],
+[222,"Kanan","ขวา","Belok kanan selepas ini. (หลังจากนี้ให้เลี้ยวขวา)"],
+[223,"Terus","ตรงไป","Jalan terus sahaja. (เดินตรงไปเลย)"],
+[224,"Atas","บน","Di atas meja. (บนโต๊ะ)"],
+[225,"Bawah","ล่าง","Di bawah kerusi. (ใต้เก้าอี้)"],
+[226,"Depan","หน้า","Di depan rumah. (หน้าบ้าน)"],
+[227,"Belakang","หลัง","Di belakang bangunan. (หลังตึก)"],
+[228,"Dalam","ใน","Di dalam beg. (ในกระเป๋า)"],
+[229,"Luar","นอก","Tunggu di luar. (รอข้างนอก)"],
+[230,"Dekat","ใกล้","Rumah saya sangat dekat. (บ้านของฉันใกล้มาก)"],
+[231,"Jauh","ไกล","Kedai itu sangat jauh. (ร้านนั้นไกลมาก)"],
+[232,"Sini","ที่นี่","Duduk di sini. (นั่งตรงนี้)"],
+[233,"Sana","ที่นั่น","Letak di sana. (วางตรงนั้น)"],
+[234,"Kereta","รถยนต์","Saya naik kereta. (ฉันไปโดยรถยนต์)"],
+[235,"Bas","รถเมล์","Bas sudah sampai. (รถเมล์มาถึงแล้ว)"],
+[236,"Teksi","แท็กซี่","Panggil satu teksi. (เรียกแท็กซี่หนึ่งคัน)"],
+[237,"Motosikal","มอเตอร์ไซค์","Dia naik motosikal. (เขาขี่มอเตอร์ไซค์)"],
+[238,"Tiket","ตั๋ว","Beli tiket di kaunter. (ซื้อตั๋วที่เคาน์เตอร์)"],
+[239,"Berhenti","หยุด","Berhenti di sini. (หยุดตรงนี้)"],
+[240,"Sesat","หลงทาง","Saya sudah sesat. (ฉันหลงทางแล้ว)"],
+[241,"Suka","ชอบ","Saya suka warna biru. (ฉันชอบสีน้ำเงิน)"],
+[242,"Sayang","รัก / เอ็นดู","Saya sayang ibu saya. (ฉันรักแม่ของฉัน)"],
+[243,"Gembira","ดีใจ / มีความสุข","Saya sangat gembira. (ฉันมีความสุขมาก)"],
+[244,"Sedih","เสียใจ / เศร้า","Jangan berasa sedih. (อย่ารู้สึกเสียใจเลย)"],
+[245,"Marah","โกรธ","Dia sedang marah. (เขากำลังโกรธ)"],
+[246,"Takut","กลัว","Saya takut hantu. (ฉันกลัวผี)"],
+[247,"Malu","อาย","Budak itu sangat malu. (เด็กคนนั้นขี้อายมาก)"],
+[248,"Penat / Letih","เหนื่อย","Saya rasa sangat penat. (ฉันรู้สึกเหนื่อยมาก)"],
+[249,"Bosan","เบื่อ","Saya bosan di rumah. (ฉันเบื่อที่บ้าน)"],
+[250,"Rindu","คิดถึง","Saya rindu keluarga. (ฉันคิดถึงครอบครัว)"],
+[251,"Sakit","เจ็บ / ป่วย","Kepala saya sakit. (ฉันปวดหัว)"],
+[252,"Terkejut","ตกใจ","Saya terkejut tadi. (เมื่อกี้ฉันตกใจ)"],
+[253,"Benci","เกลียด","Jangan benci sesama kita. (อย่าเกลียดกันเองเลย)"],
+[254,"Risau","กังวล","Ibu risau pasal awak. (แม่กังวลเรื่องคุณนะ)"],
+[255,"Yakin","มั่นใจ","Saya yakin boleh buat. (ฉันมั่นใจว่าทำได้)"],
+[256,"Berani","กล้าหาญ","Awak sangat berani. (คุณกล้าหาญมาก)"],
+[257,"Sabar","อดทน","Kita kena banyak sabar. (พวกเราต้องอดทนให้มาก)"],
+[258,"Kasihan","สงสาร","Kasihan kucing itu. (น่าสงสารแมวตัวนั้นจัง)"],
+[259,"Selesa","สบาย","Bilik ini sangat selesa. (ห้องนี้สบายมาก)"],
+[260,"Mengantuk","ง่วงนอน","Saya sudah mengantuk. (ฉันง่วงนอนแล้ว)"],
+[261,"Marah","โกรธ","Dia marah pada saya. (เขาโกรธฉัน)"],
+[262,"Cemburu","หึง / อิจฉา","Jangan cemburu padanya. (อย่าอิจฉาเขาเลย)"],
+[263,"Hairan","แปลกใจ","Saya hairan kenapa dia buat begitu. (ฉันแปลกใจว่าทำไมเขาถึงทำแบบนั้น)"],
+[264,"Bangga","ภูมิใจ","Saya bangga dengan anda. (ฉันภูมิใจในตัวคุณ)"],
+[265,"Tenang","สงบ","Suasana di sini tenang. (บรรยากาศที่นี่สงบ)"],
+[266,"Keluarga","ครอบครัว","Saya sayang keluarga saya. (ฉันรักครอบครัวของฉัน)"],
+[267,"Ayah / Bapa","พ่อ","Ayah saya seorang polis. (พ่อของฉันเป็นตำรวจ)"],
+[268,"Ibu / Emak","แม่","Ibu masak di dapur. (แม่ทำอาหารอยู่ในครัว)"],
+[269,"Abang","พี่ชาย","Abang saya belajar di universiti. (พี่ชายของฉันเรียนอยู่ที่มหาวิทยาลัย)"],
+[270,"Kakak","พี่สาว","Kakak saya sudah kerja. (พี่สาวของฉันทำงานแล้ว)"],
+[271,"Adik","น้อง","Adik saya masih kecil. (น้องของฉันยังเด็กอยู่)"],
+[272,"Datuk","ปู่/ ตา","Datuk saya suka berkebun. (ตาของฉันชอบทำสวน)"],
+[273,"Nenek","ย่า / ยาย","Nenek saya sangat baik. (ยายของฉันใจดีมาก)"],
+[274,"Anak","ลูก","Dia ada tiga orang anak. (เขามีลูกสามคน)"],
+[275,"Suami","สามี","Suami saya di pejabat. (สามีของฉันอยู่ที่ออฟฟิศ)"],
+[276,"Isteri","ภรรยา","Isteri saya sedang tidur. (ภรรยาของฉันกำลังนอนหลับ)"],
+[277,"Pak cik","ลุง / น้าชาย","Pak cik saya tinggal di sini. (น้าชายของฉันอยู่ที่นี่)"],
+[278,"Mak cik","ป้า / น้าหญิง","Mak cik saya beri hadiah. (ป้าของฉันให้ของขวัญ)"],
+[279,"Saudara","ญาติ","Kami ada banyak saudara. (พวกเรามีญาติเยอะ)"],
+[280,"Cucu","หลาน (ลูกของลูก)","Nenek sayang cucu. (ยายรักหลาน)"],
+[281,"Anak buah","หลาน (ลูกของพี่น้อง)","Ini anak buah saya. (นี่คือหลานของฉัน)"],
+[282,"Tunang","คู่หมั้น","Dia tunang kawan saya. (เขาเป็นคู่หมั้นของเพื่อนฉัน)"],
+[283,"Janda","แม่หม้าย","Dia seorang janda. (เธอเป็นแม่หม้าย)"],
+[284,"Duda","พ่อหม้าย","Dia seorang duda. (เขาเป็นพ่อหม้าย)"],
+[285,"Sahabat","เพื่อนสนิท","Dia sahabat lama saya. (เขาเป็นเพื่อนสนิทเก่าของฉัน)"],
+[286,"Panas","ร้อน","Cuaca hari ini sangat panas. (อากาศวันนี้ร้อนมาก)"],
+[287,"Sejuk","หนาว / เย็น","Air ini sangat sejuk. (น้ำนี้เย็นมาก)"],
+[288,"Hujan","ฝนตก","Sekarang sedang hujan. (ตอนนี้ฝนกำลังตก)"],
+[289,"Angin","ลม","Angin bertiup kencang. (ลมพัดแรง)"],
+[290,"Matahari","ดวงอาทิตย์","Matahari sangat terik. (ดวงอาทิตย์ร้อนแรงมาก)"],
+[291,"Bulan","ดวงจันทร์","Bulan nampak jelas malam ini. (คืนนี้เห็นดวงจันทร์ชัดเจน)"],
+[292,"Bintang","ดาว","Ada banyak bintang. (มีดาวมากมาย)"],
+[293,"Langit","ท้องฟ้า","Langit berwarna biru. (ท้องฟ้าเป็นสีฟ้า)"],
+[294,"Awan","เมฆ","Awan sangat tebal. (เมฆหนามาก)"],
+[295,"Laut","ทะเล","Mari mandi laut. (ไปเล่นน้ำทะเลกันเถอะ)"],
+[296,"Gunung","ภูเขา","Gunung itu sangat tinggi. (ภูเขาลูกนั้นสูงมาก)"],
+[297,"Sungai","แม่น้ำ","Sungai ini sangat dalam. (แม่น้ำสายนี้ลึกมาก)"],
+[298,"Pokok","ต้นไม้","Pokok itu berbuah lebat. (ต้นไม้นั้นลูกดกมาก)"],
+[299,"Bunga","ดอกไม้","Bunga ini sangat wangi. (ดอกไม้นี้หอมมาก)"],
+[300,"Haiwan / Binatang","สัตว์","Saya suka haiwan. (ฉันชอบสัตว์)"],
+[301,"Kucing","แมว","Kucing saya warna putih. (แมวของฉันสีขาว)"],
+[302,"Anjing","สุนัข","Anjing itu menyalak. (สุนัขตัวนั้นเห่า)"],
+[303,"Burung","นก","Burung itu terbang tinggi. (นกตัวนั้นบินสูง)"],
+[304,"Ikan","ปลา","Ikan berenang dalam air. (ปลาว่ายอยู่ในน้ำ)"],
+[305,"Tanah","ดิน","Tanah ini sangat subur. (ดินนี้อุดมสมบูรณ์มาก)"],
+[306,"Kerja","งาน","Saya ada banyak kerja. (ฉันมีงานเยอะ)"],
+[307,"Sihat","สุขภาพดี","Saya berasa sihat. (ฉันรู้สึกสุขภาพแข็งแรง)"],
+[308,"Demam","ไข้","Saya sedang demam. (ฉันกำลังเป็นไข้)"],
+[309,"Batuk","ไอ","Dia batuk sejak semalam. (เขาไอตั้งแต่เมื่อวาน)"],
+[310,"Selsema","หวัด","Saya kena selsema. (ฉันเป็นหวัด)"],
+[311,"Ubat","ยา","Jangan lupa makan ubat. (อย่าลืมกินยานะ)"],
+[312,"Rehat","พักผ่อน","Anda perlu rehat secukupnya. (คุณต้องพักผ่อนให้เพียงพอ)"],
+[313,"Mesyuarat","ประชุม","Mesyuarat bermula sekarang. (การประชุมเริ่มขึ้นแล้วตอนนี้)"],
+[314,"Gaji","เงินเดือน","Gaji sudah masuk. (เงินเดือนออกแล้ว)"],
+[315,"Syarikat","บริษัท","Saya kerja di syarikat besar. (ฉันทำงานในบริษัทใหญ่)"],
+[316,"Komputer","คอมพิวเตอร์","Komputer saya rosak. (คอมพิวเตอร์ของฉันเสีย)"],
+[317,"Telefon","โทรศัพท์","Jawab telefon itu. (รับโทรศัพท์นั่นด้วย)"],
+[318,"Fail","ไฟล์/ แฟ้ม","Simpan fail ini. (เก็บแฟ้มนี้ไว้)"],
+[319,"Mesin","เครื่องจักร","Mesin ini sangat bising. (เครื่องจักรนี้เสียงดังมาก)"],
+[320,"Penat","เหนื่อย","Saya penat bekerja. (ฉันเหนื่อยจากการทำงาน)"],
+[321,"Sibuk","ยุ่ง","Saya sangat sibuk hari ini. (วันนี้ฉันยุ่งมาก)"],
+[322,"Bersih","สะอาด","Pastikan pejabat bersih. (ดูแลให้ออฟฟิศสะอาดนะ)"],
+[323,"Kotor","สกปรก","Baju ini kotor. (เสื้อตัวนี้สกปรก)"],
+[324,"Cepat","เร็ว","Buat kerja dengan cepat. (ทำงานให้เร็วๆ)"],
+[325,"Lambat","ช้า","Jangan datang lambat. (อย่ามาสาย/ช้า)"],
+[326,"Senaman","ออกกำลังกาย","Senaman setiap pagi. (ออกกำลังกายทุกเช้า)"],
+[327,"Berenang","ว่ายน้ำ","Saya suka berenang. (ฉันชอบว่ายน้ำ)"],
+[328,"Menonton","ดู (ทีวี/หนัง)","Saya menonton televisyen. (ฉันดูโทรทัศน์)"],
+[329,"Membeli-belah","ช้อปปิ้ง","Mari pergi membeli-belah. (ไปช้อปปิ้งกันเถอะ)"],
+[330,"Memasak","การทำอาหาร","Memasak adalah hobi saya. (การทำอาหารเป็นงานอดิเรกของฉัน)"],
+[331,"Berkebun","ทำสวน","Datuk suka berkebun. (ตาสนุกกับการทำสวน)"],
+[332,"Menyanyi","ร้องเพลง","Dia pandai menyanyi. (เขาร้องเพลงเก่ง)"],
+[333,"Menari","เต้น","Mereka sedang menari. (พวกเขากำลังเต้น)"],
+[334,"Melancong","ท่องเที่ยว","Saya mahu melancong ke luar negara. (ฉันอยากไปเที่ยวต่างประเทศ)"],
+[335,"Memandu","ขับรถ","Saya pandai memandu. (ฉันขับรถเก่ง)"],
+[336,"Telefon bimbit","มือถือ","Di mana telefon bimbit saya? (มือถือของฉันอยู่ที่ไหน?)"],
+[337,"Internet","อินเทอร์เน็ต","Internet sangat perlahan. (อินเทอร์เน็ตช้ามาก)"],
+[338,"Email","อีเมล","Hantar email kepada saya. (ส่งอีเมลหาฉันด้วย)"],
+[339,"Kata laluan","รหัสผ่าน","Apa kata laluan ini? (รหัสผ่านนี้คืออะไร?)"],
+[340,"Fail","ไฟล์","Fail sudah dihantar. (ไฟล์ถูกส่งแล้ว)"],
+[341,"Kerusi","เก้าอี้","Duduk di atas kerusi. (นั่งบนเก้าอี้)"],
+[342,"Meja","โต๊ะ","Letak atas meja. (วางบนโต๊ะ)"],
+[343,"Lampu","ไฟ","Tolong padamkan lampu. (ช่วยปิดไฟหน่อย)"],
+[344,"Kipas","พัดลม","Buka kipas itu. (เปิดพัดลมนั้นหน่อย)"],
+[345,"Tandas","ห้องน้ำ","Saya perlu ke tandas. (ฉันต้องไปห้องน้ำ)"],
+[346,"Kunci","กุญแจ","Di mana kunci kereta? (กุญแจรถอยู่ที่ไหน?)"],
+[347,"Dompet","กระเป๋าสตางค์","Dompet saya hilang. (กระเป๋าสตางค์ฉันหาย)"],
+[348,"Jam","นาฬิกา","Lihat jam sekarang. (ดูเวลานาฬิกาตอนนี้สิ)"],
+[349,"Pintu","ประตู","Tutup pintu itu. (ปิดประตูบานนั้นด้วย)"],
+[350,"Tingkap","หน้าต่าง","Buka tingkap, panas. (เปิดหน้าต่างหน่อย ร้อน)"]
+];
+
+// speak
+function speak(text){
+  try{
+    if(!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text.split(' / ')[0].split('?')[0]);
+    u.lang = 'ms-MY'; u.rate = 0.85;
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+// populate category filter
+const catSel = document.getElementById('catFilter');
+CATS.forEach((c,i)=>{const o=document.createElement('option');o.value=i;o.textContent=c;catSel.appendChild(o);});
+
+// dictionary render
+const listEl = document.getElementById('list');
+const countEl = document.getElementById('count');
+function render(){
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const cf = catSel.value;
+  const filtered = WORDS.filter(w=>{
+    const matchQ = !q || w[1].toLowerCase().includes(q) || w[2].toLowerCase().includes(q) || w[3].toLowerCase().includes(q);
+    const matchC = cf==='' || catOf(w[0])==Number(cf);
+    return matchQ && matchC;
+  });
+  countEl.textContent = `พบ ${filtered.length} คำ`;
+  if(filtered.length===0){
+    listEl.innerHTML = '<div class="empty">ไม่พบคำที่ค้นหา 🔍</div>';
+    return;
+  }
+  listEl.innerHTML = filtered.map(w=>`
+    <div class="word-card">
+      <div class="wc-top">
+        <div>
+          <div class="wc-my"><span class="wc-no">${w[0]}.</span>${w[1]}</div>
+          <div class="wc-th">${w[2]}</div>
+        </div>
+        <button class="spk" onclick="speak('${w[1].replace(/'/g,"\\'")}')">🔊</button>
+      </div>
+      <div class="wc-ex">${w[3]}</div>
+      <div class="cat-tag">${CATS[catOf(w[0])]}</div>
+    </div>
+  `).join('');
+}
+document.getElementById('search').addEventListener('input', render);
+catSel.addEventListener('change', render);
+render();
+
+// flashcards: 50 words spread across all categories (every 7th)
+const FC = WORDS.filter(w => (w[0]-1) % 7 === 0);
+let fcOrder = FC.map((_,i)=>i);
+let fcIdx = 0;
+const fcCardEl = document.getElementById('fcCard');
+function showFC(){
+  const w = FC[fcOrder[fcIdx]];
+  fcCardEl.classList.remove('flipped');
+  document.getElementById('fcMy').textContent = w[1];
+  document.getElementById('fcTh').textContent = w[2];
+  document.getElementById('fcEx').textContent = w[3];
+  document.getElementById('fc-cat').textContent = CATS[catOf(w[0])];
+  document.getElementById('fc-progress').textContent = (fcIdx+1)+' / '+FC.length;
+}
+// need fcIdx to reference actual word via fcOrder
+Object.defineProperty(window,'fcIdxWord',{get(){return FC[fcOrder[fcIdx]];}});
+fcCardEl.addEventListener('click', ()=> fcCardEl.classList.toggle('flipped'));
+function nextFC(){ fcIdx = (fcIdx+1) % FC.length; showFC(); }
+function shuffleFC(){
+  for(let i=fcOrder.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[fcOrder[i],fcOrder[j]]=[fcOrder[j],fcOrder[i]];}
+  fcIdx = 0; showFC();
+}
+document.getElementById('fcSpeak').onclick = (e)=>{ e.stopPropagation(); speak(fcIdxWord[1]); };
+showFC();
+
+// tabs
+const tabDict = document.getElementById('tabDict'), tabFC = document.getElementById('tabFC');
+const dictWrap = document.getElementById('dict-wrap'), fcWrap = document.getElementById('fc-wrap');
+const searchRow = document.getElementById('dict-search-row');
+tabDict.onclick = ()=>{tabDict.classList.add('active');tabFC.classList.remove('active');dictWrap.style.display='block';fcWrap.classList.remove('active');searchRow.style.display='flex';};
+tabFC.onclick = ()=>{tabFC.classList.add('active');tabDict.classList.remove('active');dictWrap.style.display='none';fcWrap.classList.add('active');searchRow.style.display='none';};
+</script>
+</body>
+</html>
